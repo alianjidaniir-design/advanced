@@ -4,12 +4,24 @@ import (
 	"fmt"
 )
 
+func printer(ch chan<- bool) {
+	ch <- true
+}
+
+func write(c chan<- int, x int) {
+	fmt.Println("1", x)
+	c <- x
+	fmt.Println("2", x)
+}
+
+func f2(out <-chan int, in chan<- int) {
+	x := <-out
+	fmt.Println("Read (f2)", x)
+	in <- x
+}
 func main() {
-	willclose := make(chan complex64, 10)
-	willclose <- -1
-	willclose <- -1i
-	<-willclose
-	<-willclose
-	read := <-willclose
-	fmt.Println(read)
+
+	c1 := make(chan bool)
+	go printer(c1)
+
 }
