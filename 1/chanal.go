@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"sync"
-)
+import "fmt"
 
 //write to chanal and close it
 
@@ -11,53 +8,21 @@ func writeTochanal(c chan int, x int) {
 	c <- x
 	close(c)
 }
-
-func boolchanal(ch chan bool) {
-	ch <- true
+func boolchanal(ch chan<- bool, times int) {
+	for i := 0; i < times; i++ {
+		ch <- true
+	}
+	close(ch)
 }
 func main() {
-	// create a buffer canal
-	c := make(chan int)
-
-	var waitGroup sync.WaitGroup
-	waitGroup.Add(1)
-
-	go func(c chan int) {
-		defer waitGroup.Done()
-		writeTochanal(c, 13)
-		fmt.Println("Exit.")
-	}(c)
-
-	fmt.Println("Read:", <-c)
-
-	_, ok := <-c
-	if ok {
-		fmt.Println("channel is open!")
-
-	} else {
-		fmt.Println("channel is close!")
-	}
-
-	waitGroup.Wait()
-
 	var ch chan bool = make(chan bool)
-	for i := 0; i < 6; i++ {
-		go boolchanal(ch)
+	go boolchanal(ch, 7)
+	for val := range ch {
+		fmt.Println(val, "", 2)
 	}
-	n := 0
-	for v := range ch {
-		fmt.Println(v)
-		if v == true {
-			n++
-		}
-		if n > 2 {
-			fmt.Println("n:", n)
-			close(ch)
-			break
-		}
+	fmt.Println("")
+	for i := 0; i < 10; i++ {
+		fmt.Println(<-ch, "")
 	}
-	for i := 0; i < 5; i++ {
-		fmt.Println(<-ch)
-	}
-
+	fmt.Println()
 }
