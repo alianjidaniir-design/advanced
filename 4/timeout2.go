@@ -35,7 +35,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	Duration := time.Duration(f) * time.Microsecond
+	Duration := time.Duration(f) * time.Millisecond
 	fmt.Println("Duration:", Duration)
 	go timeout(Duration)
 	val := <-result
