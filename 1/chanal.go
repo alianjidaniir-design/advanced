@@ -25,4 +25,11 @@ func main() {
 		fmt.Println(<-ch, "")
 	}
 	fmt.Println()
+
+	var c chan int = make(chan int)
+
+	go writeTochanal(c, 5)
+	for vay := range c {
+		fmt.Println(vay)
+	}
 }
