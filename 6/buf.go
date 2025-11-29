@@ -9,7 +9,7 @@ func main() {
 	for i := 2; i < counter; i++ {
 		select {
 		case num <- i:
-			fmt.Println(1)
+			fmt.Println(7 * i)
 		case num <- i * i:
 			fmt.Println("proccessing", i)
 		default:
