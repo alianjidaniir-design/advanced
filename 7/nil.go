@@ -23,7 +23,10 @@ func add(c chan int) {
 		}
 	}
 }
+
 func send(c chan int) {
+	fmt.Println()
+
 	for {
 		c <- rand.Intn(69)
 	}
@@ -34,7 +37,7 @@ func main() {
 	wg.Add(1)
 	go add(c)
 	go send(c)
-	time.Sleep(time.Second * 2)
 	wg.Wait()
+	fmt.Println()
 	fmt.Println("done")
 }
