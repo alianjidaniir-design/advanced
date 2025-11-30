@@ -64,6 +64,11 @@ func main() {
 		D(w)
 	}()
 
+	wg.Add(1)
+	go func() {
+		D(w)
+	}()
+
 	close(x)
 	wg.Wait()
 
