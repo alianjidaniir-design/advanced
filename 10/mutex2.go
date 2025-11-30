@@ -8,25 +8,22 @@ import (
 	"time"
 )
 
-var m sync.Mutex
-var v1 int
+var m2 sync.Mutex
+var v2 int
 
-func change() {
-	m.Lock()
-	defer m.Unlock()
+func changes() {
+	m2.Lock()
 	time.Sleep(1 * time.Second)
-	v1 = v1 + 1
-	if v1*v1 == 81 {
-		v1 = 0
+	v2 = v2 + 1
+	if v2*v2 == 81 {
+		v2 = 0
 		fmt.Print("changed")
 
 	}
 }
-func read() int {
-	m.Lock()
-	a := v1
-	defer m.Unlock()
-	return a
+func reads() int {
+	m2.Lock()
+	return 2
 }
 
 func main() {
@@ -43,16 +40,16 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	fmt.Print(read())
+	fmt.Print(reads())
 	for i := 0; i < mutex; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			change()
-			fmt.Printf("_> %d", read())
+			changes()
+			fmt.Printf("_> %d", reads())
 		}()
 	}
 
 	wg.Wait()
-	fmt.Printf("->%d\n", read())
+	fmt.Printf("->%d\n", reads())
 }
