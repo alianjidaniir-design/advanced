@@ -21,11 +21,11 @@ func change2(pass string) {
 	}
 	fmt.Println("change2() function")
 	Password.RMW.Lock()
-	fmt.Println("password.RMW lock")
+	fmt.Println("change2() locked")
 	time.Sleep(1 * time.Second)
 	Password.password = pass
 	Password.RMW.Unlock()
-	fmt.Println("password.RMW unlock")
+	fmt.Println("change2() unlocked")
 }
 
 func show() {
