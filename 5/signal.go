@@ -1,7 +1,70 @@
 package main
 
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+var wg sync.WaitGroup
+
+func A(a, b chan struct{}) {
+	<-a
+	fmt.Println("A(Ali)")
+	time.Sleep(time.Second)
+	close(b)
+}
+
+func B(a, b chan struct{}) {
+	<-a
+	fmt.Println("B(Bahram)")
+	time.Sleep(time.Second)
+	close(b)
+}
+func C(a, b chan struct{}) {
+	<-a
+	fmt.Println("C(C)")
+	time.Sleep(time.Second)
+	close(b)
+}
+
+func D(a chan struct{}) {
+	<-a
+	fmt.Println("D(Davvod)")
+	time.Sleep(time.Second)
+	wg.Done()
+}
+
 func main() {
-	var ch chan string
-	close(ch)
+
+	x := make(chan struct{})
+	y := make(chan struct{})
+	z := make(chan struct{})
+	w := make(chan struct{})
+
+	wg.Add(1)
+	go func() {
+		D(w)
+	}()
+	wg.Add(1)
+	go func() {
+		D(w)
+	}()
+	go A(x, y)
+	wg.Add(1)
+	go func() {
+		D(w)
+	}()
+
+	go C(z, w)
+	go B(y, z)
+
+	wg.Add(1)
+	go func() {
+		D(w)
+	}()
+
+	close(x)
+	wg.Wait()
 
 }
