@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 	"sync"
-	"time"
 )
 
 var readValue = make(chan int)
