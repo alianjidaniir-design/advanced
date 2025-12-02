@@ -10,7 +10,7 @@ import (
 func main() {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancelCause(ctx)
-	cancel(errors.New("Cancled By timeout"))
+	cancel(errors.New("Canclled By timeout"))
 	err := takingTooLong(ctx)
 	if err != nil {
 		fmt.Println(err)
@@ -24,7 +24,7 @@ func takingTooLong(ctx context.Context) error {
 		fmt.Println("Done")
 		return nil
 	case <-ctx.Done():
-		fmt.Println("Cancelled")
-		return ctx.Err()
+		fmt.Println("Canceled!")
+		return context.Cause(ctx)
 	}
 }
