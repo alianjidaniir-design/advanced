@@ -33,6 +33,14 @@ func monitor() {
 }
 
 func main() {
+
+	for i := 0; i < 10; i++ {
+		go func() {
+			fmt.Print(i, "")
+		}()
+		fmt.Println()
+	}
+
 	if len(os.Args) != 2 {
 		fmt.Println("two")
 		return
@@ -53,5 +61,5 @@ func main() {
 		}()
 	}
 	wg.Wait()
-	fmt.Println(Read())
+	fmt.Println("Last value", Read())
 }
