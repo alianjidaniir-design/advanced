@@ -105,4 +105,11 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		body = fmt.Sprintf("%s,%d,%f,%f\n", t.Name, t.Len, t.Mean, t.StdDev)
 	}
+	log.Println("Serving:", r.URL.Path, "from", r.Host)
+
+	fmt.Fprintf(w, "%s", body)
+}
+
+func main() {
+
 }
