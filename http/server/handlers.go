@@ -22,7 +22,7 @@ func deleteHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(paramstr)
 	if len(paramstr) < 3 {
 		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintln(w, "404 not found", r.URL.Path)
+		fmt.Fprintln(w, " not found", r.URL.Path)
 		return
 	}
 	log.Println("Serving:", r.URL.Path, "from", r.Host)
@@ -50,7 +50,7 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 func statusHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Serving:", r.URL.Path, "from", r.Host)
 	w.WriteHeader(http.StatusOK)
-	body := fmt.Sprintf("Total entries: %d\n", len(list()))
+	body := fmt.Sprintf("Total entries: %d\n", len(data))
 	fmt.Fprintf(w, "%s", body)
 
 }
