@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const PORT = ":1234"
@@ -76,7 +78,7 @@ func insertHandler(w http.ResponseWriter, r *http.Request) {
 	err := insert(&entry)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		Body := "Failed to addd record\n"
+		Body := "Failed to add record\n"
 		fmt.Fprintf(w, "%s", Body)
 	} else {
 		Body := "New record added successfully\n"
@@ -111,5 +113,44 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
+	err := save(JSONFILE)
+	if err != nil && err != io.EOF {
+		fmt.Println("Errors", err)
+		return
+	}
+	creates()
+
+	mux := http.NewServeMux()
+	s := &http.Server{
+		Addr:         PORT,
+		Handler:      mux,
+		IdleTimeout:  10 * time.Second,
+		ReadTimeout:  time.Second,
+		WriteTimeout: time.Second,
+	}
+
+	mux.Handle("/list", http.HandlerFunc(listHandler))
+
+	mux.Handle("/insert/", http.HandlerFunc(insertHandler))
+
+	mux.Handle("/insert", http.HandlerFunc(insertHandler))
+
+	mux.Handle("/search", http.HandlerFunc(searchHandler))
+
+	mux.Handle("/search/", http.HandlerFunc(searchHandler))
+
+	mux.Handle("/delete/", http.HandlerFunc(deleteHandler))
+
+	mux.Handle("/status", http.HandlerFunc(statusHandler))
+
+	mux.Handle("/", http.HandlerFunc(defaultHandler))
+
+	fmt.Println("Ready to serve at ", PORT)
+	err = s.ListenAndServe()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 }
