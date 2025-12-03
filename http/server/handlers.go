@@ -58,4 +58,19 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 func insertHandler(w http.ResponseWriter, r *http.Request) {
 	paramstr := strings.Split(r.URL.Path, "/")
 	fmt.Println("Path:", paramstr)
+	if len(paramstr) < 4 {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Not enough arquments:"+r.URL.Path)
+		return
+	}
+	dataset := paramstr[2]
+	dataStr := paramstr[3:]
+	data := make([]float64, 0)
+	for _, v := range dataStr {
+		val, err := strconv.ParseFloat(v, 64)
+		if err == nil {
+			data = append(data, val)
+		}
+	}
+	entry := process(dataset, data)
 }
