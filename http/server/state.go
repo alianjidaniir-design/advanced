@@ -20,7 +20,7 @@ type Entry struct {
 	StdDev float64
 }
 
-func process(file string, value []float64) {
+func process(file string, value []float64) Entry {
 	currentEntry := Entry{}
 	currentEntry.Name = file
 	currentEntry.Len = len(value)
@@ -29,7 +29,7 @@ func process(file string, value []float64) {
 	meanValue, standardDeviation := stdDev(value)
 	currentEntry.Mean = meanValue
 	currentEntry.StdDev = standardDeviation
-	return
+	return currentEntry
 }
 
 func stdDev(x []float64) (float64, float64) {
