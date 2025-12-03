@@ -94,3 +94,47 @@ func Read(file string) error {
 	}
 	return nil
 }
+
+func creates() {
+	index = make(map[string]int)
+	for i, k := range data {
+		index[k.Name] = i
+	}
+}
+
+func insert(pS *Entry) error {
+	_, ok := index[(*pS).Name]
+	if ok {
+		return fmt.Errorf("entry with name %s already exists", (*pS).Name)
+	}
+	data = append(data, *pS)
+	creates()
+	err := save(JSONFILE)
+	if err != nil {
+		return err
+
+	}
+	return nil
+}
+
+func DeleteEntry(name string) error {
+	i, ok := index[name]
+	if !ok {
+		return fmt.Errorf("entry with name %s not found", name)
+	}
+	data = append(data[:i], data[i+1:]...)
+	delete(index, name)
+	err := save(JSONFILE)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func search(name string) *Entry {
+	i, ok := index[name]
+	if !ok {
+		return nil
+	}
+	return &data[i]
+}
