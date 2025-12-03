@@ -17,9 +17,10 @@ func myHandler(w http.ResponseWriter, r *http.Request) {
 func timeHandler(w http.ResponseWriter, r *http.Request) {
 	t := time.Now().Format("Mon Jan 02 15:04:05 -0700 2006")
 	Body := "My time is: "
-	fmt.Fprintf(w, "<h1 align=\\\"center\\\">%s</h1>", Body)
-	fmt.Fprintf(w, "<h2 align=\\\"center\\\">%s</h2>", t)
-	fmt.Fprintf(w, "<h3 align=\\\"center\\\">%s</h3>", r.URL.Path)
+	fmt.Fprintf(w, "<h1 align=\"center\">%s</h1>", Body)
+	fmt.Fprintf(w, "<h2 align=\"center\">%s</h2>\n", t)
+
+	fmt.Fprintf(w, "Serving: %s\\n", r.URL.Path)
 	fmt.Printf("Served time for: %s\n", r.Host)
 }
 
