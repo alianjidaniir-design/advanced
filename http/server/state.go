@@ -50,11 +50,47 @@ var JSONFILE = "./data.json"
 
 type Photobook []Entry
 
-var dats = Photobook{}
+var data = Photobook{}
 var index map[string]int
 
 func DESerialized(slice interface{}, w io.Reader) error {
 	fe := json.NewDecoder(w)
 	return fe.Decode(&slice)
 
+}
+
+func Serialized(slice interface{}, w io.Writer) error {
+	fe := json.NewEncoder(w)
+	return fe.Encode(slice)
+}
+
+func save(file string) error {
+	f, err := os.Create(file)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	err = Serialized(&data, f)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func Read(file string) error {
+	_, err := os.Stat(file)
+	if err != nil {
+		return err
+	}
+	f, err := os.Open(file)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	err = DESerialized(&data, f)
+	if err != nil {
+		return err
+	}
+	return nil
 }
