@@ -73,4 +73,36 @@ func insertHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	entry := process(dataset, data)
+	err := insert(&entry)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		Body := "Failed to addd record\n"
+		fmt.Fprintf(w, "%s", Body)
+	} else {
+		Body := "New record added successfully\n"
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "%s", Body)
+	}
+	log.Println("Serving:", r.URL.Path, "from", r.Host)
+}
+
+func searchHandler(w http.ResponseWriter, r *http.Request) {
+	//Get Search value from URL
+	paramstr := strings.Split(r.URL.Path, "/")
+	fmt.Println("Path:", paramstr)
+	if len(paramstr) < 3 {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintln(w, "Not enough arquments:"+r.URL.Path)
+		return
+	}
+	var body string
+	datset := paramstr[2]
+	t := search(datset)
+	if t == nil {
+		w.WriteHeader(http.StatusNotFound)
+		body = "Could not find record\n" + datset + "\n"
+	} else {
+		w.WriteHeader(http.StatusOK)
+		body = fmt.Sprintf("%s,%d,%f,%f\n", t.Name, t.Len, t.Mean, t.StdDev)
+	}
 }
