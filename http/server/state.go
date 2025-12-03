@@ -138,3 +138,22 @@ func search(name string) *Entry {
 	}
 	return &data[i]
 }
+
+func list() string {
+	var all string
+	for _, k := range data {
+		all = all + fmt.Sprintf("%s\t , %d\t , %f\t, %f\t\n ", k.Name, k.Len, k.Mean, k.Mean)
+	}
+	return all
+
+}
+
+func main() {
+	err := Read(JSONFILE)
+	if err != nil && err != io.EOF {
+		fmt.Println("Error:", err)
+		return
+	}
+	creates()
+
+}
