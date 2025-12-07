@@ -46,7 +46,7 @@ func stdDev(x []float64) (float64, float64) {
 	return meanValue, standardDeviation
 }
 
-var JSONFILE = "./data.json"
+var JSONFILE = "data.json"
 
 type Photobook []Entry
 
