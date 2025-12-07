@@ -6,7 +6,7 @@ RUN apk update && apk add --no-cache git
 
 RUN mkdir $GOPATH/src/server
 
-ADD stats.go $GOPATH/src/server
+ADD state.go $GOPATH/src/server
 
 ADD handlers.go $GOPATH/src/server
 
@@ -18,7 +18,7 @@ RUN go mod tidy
 
 RUN mkdir /pro
 
-RUN go build -o /pro/server stats.go handlers.go
+RUN go build -o /pro/server state.go handlers.go
 
 FROM alpine:latest
 
