@@ -16,7 +16,7 @@ func write(c chan<- int, x int) {
 
 func f2(out <-chan int, in chan<- int) {
 	x := <-out
-	fmt.Println("Read (f2)", x)
+	fmt.Println("Read (saeed)", x)
 	in <- x
 }
 func main() {

@@ -37,10 +37,10 @@ func f2(t int) {
 	}()
 	select {
 	case <-c2.Done():
-		fmt.Println("f2() done", c2.Err())
+		fmt.Println("saeed() done", c2.Err())
 		return
 	case r := <-time.After(time.Duration(t) * time.Second):
-		fmt.Println("f2() timeout. r:", r)
+		fmt.Println("saeed() timeout. r:", r)
 	}
 
 }
